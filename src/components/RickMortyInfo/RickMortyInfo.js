@@ -10,21 +10,19 @@ export default function RickMortyInfo() {
     const URL_BASE = 'https://rickandmortyapi.com/api/character/'
  
 
-    //data: variable para guardar info
-    const [data, setData] = useState([])
-    const [charId, setCharId] = useState(1)
-    const [error, setError] = useState(false)
- 
 
-    const [saveOutput,setSaveOutput] = useState([])
+    const [data, setData] = useState([]) // para el mapeo del personaje 
+    const [charId, setCharId] = useState(1) // counter para personajes
+    const [error, setError] = useState(false) // tirar un error
+    const [saveOutput,setSaveOutput] = useState([]) //guardar info y obtener el primer episodio del personaje
     
 
-    const getURLEp = async (url) => {
+    const getURLEp = async (url) => {  //2. del url , obtener info del personaje (primer episodio)
 
         try {
             const guardainfo = await axios.get(url)
-            console.log(guardainfo.data)
-            setSaveOutput([...saveOutput,guardainfo.data])
+            console.log(guardainfo.data) 
+            setSaveOutput([...saveOutput,guardainfo.data]) // !!<--- aqui es donde empieza a fallar ----->!!
             console.log(saveOutput)
 
         }
@@ -34,7 +32,7 @@ export default function RickMortyInfo() {
 
     }
 
-    const getRMInfo = async () => {
+    const getRMInfo = async () => {  //1. obtengo la data
         
 
         try {
@@ -43,13 +41,11 @@ export default function RickMortyInfo() {
 
             setData(response.data)
 
-            // for( let i = 0; i<5; i++){
-            //     getURLEp(response.data.results[i].episode[0])
-            // }
 
             let i = 0
             while (i<5) {
                 getURLEp(response.data.results[i].episode[0])
+                //console.log(response.data.results[i].episode[0])
                 i++
             }
 
@@ -103,8 +99,7 @@ export default function RickMortyInfo() {
         {data.length === 0 ? null : data.results.map((character,index)=>{
 
         if(index <5){
-            //console.log(character.episode[0])
-            // getURLEp(character.episode[0])
+
             console.log(saveOutput.episode)
             return(
                 <div className="epbox">
